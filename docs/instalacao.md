@@ -60,7 +60,7 @@ Com o Docker Compose, `DATABASE_URL`, `REDIS_URL` e `WAHA_URL` não vêm do `.en
 
 ## 2. Subir os serviços
 
-> **As imagens Docker ainda não foram montadas nem iniciadas em nenhuma máquina.** O caminho com Docker Compose foi validado só com `docker compose config`. A aplicação em si foi testada fora do Docker, com testes unitários, de banco de dados e de navegador. Quem montar as imagens primeiro, por favor relate os problemas que encontrar.
+> **O que foi verificado no Docker Compose.** As duas imagens foram montadas e a pilha completa foi iniciada uma vez, em uma máquina com Windows e Docker Desktop: as migrações rodaram, o painel abriu, o login funcionou, o worker subiu, e o WAHA (imagem padrão, versão 2026.9.2, edição Core, motor GOWS) gerou o QR code de dois chips ao mesmo tempo e entregou os avisos ao painel. Não foi verificado: parear um chip de verdade, enviar ou receber mensagens, e rodar em Linux. Se algo falhar na sua máquina, relate.
 
 ```bash
 docker compose --env-file .env -f infra/docker-compose.yml up -d --build

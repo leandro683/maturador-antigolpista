@@ -15,7 +15,7 @@ Criado por Leandro Belarmino.
 - **Risco de banimento.** Automatizar o WhatsApp pode fazer os seus números serem bloqueados ou banidos. Um banimento pode atingir vários chips de uma vez, porque eles ficam no mesmo servidor. Use por sua conta e risco. Comece com poucos chips que você aceite perder.
 - **Sem vínculo.** Este projeto não é afiliado, patrocinado nem aprovado pelo WhatsApp, pela Meta ou pelo WAHA. O WAHA, que faz a ponte com o WhatsApp, também não é oficial.
 - **Modo Supabase.** O login e o banco pelo Supabase são suportados, mas foram validados menos que o modo com Postgres comum. Faça um teste completo antes de usar com números importantes.
-- **Vários chips.** O Maturador precisa de pelo menos dois chips, o que exige um WAHA que aceite várias sessões. O arquivo `infra/docker-compose.yml` usa por padrão a imagem `devlikeapro/waha:gows`. A tag `gows` muda com o tempo e não verificamos o que ela aceita hoje. Quantas sessões simultâneas o WAHA aceita depende da edição e da versão da imagem em uso, e o Maturador precisa de pelo menos duas. Se a conexão do segundo chip falhar, defina em `WAHA_IMAGE` uma imagem do WAHA que aceite várias sessões.
+- **Vários chips.** O Maturador precisa de pelo menos dois chips, o que exige um WAHA que aceite várias sessões. O arquivo `infra/docker-compose.yml` usa por padrão a imagem `devlikeapro/waha:gows`. Em novembro de 2026 essa imagem (WAHA 2026.9.2, edição Core, motor GOWS) iniciou duas sessões ao mesmo tempo no nosso teste. A tag `gows` muda com o tempo, e quantas sessões simultâneas o WAHA aceita depende da edição e da versão da imagem em uso. Se a conexão do segundo chip falhar, defina em `WAHA_IMAGE` uma imagem do WAHA que aceite várias sessões.
 - **Não validado em produção.** O anti-golpista foi escrito e testado com motores simulados. Valide com um grupo de teste e números seus, e comece no modo simulação. Veja [docs/anti-golpista.md](docs/anti-golpista.md#o-que-ainda-não-foi-validado-com-o-whatsapp-real).
 
 ## Requisitos
@@ -28,7 +28,7 @@ Criado por Leandro Belarmino.
 
 ## Início rápido
 
-> **As imagens Docker ainda não foram montadas nem iniciadas em nenhuma máquina.** O caminho com Docker Compose foi validado só com `docker compose config`. A aplicação em si foi testada fora do Docker, com testes unitários, de banco de dados e de navegador. Quem montar as imagens primeiro, por favor relate os problemas que encontrar.
+> **O que foi verificado no Docker Compose.** As duas imagens foram montadas e a pilha completa foi iniciada uma vez, em uma máquina com Windows e Docker Desktop: as migrações rodaram, o painel abriu, o login funcionou, o worker subiu, e o WAHA gerou o QR code de dois chips ao mesmo tempo e entregou os avisos ao painel. Não foi verificado: parear um chip de verdade, enviar ou receber mensagens, e rodar em Linux. Se algo falhar na sua máquina, relate.
 
 Baixe o projeto (`git clone` ou o ZIP do GitHub) e abra um terminal na pasta dele (Git Bash, PowerShell ou Linux). Depois:
 
