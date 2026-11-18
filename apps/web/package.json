@@ -1,0 +1,45 @@
+{
+  "name": "@mag/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3100",
+    "build": "next build",
+    "start": "next start -p 3100",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint app src test middleware.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@mag/db": "workspace:*",
+    "@mag/shared": "workspace:*",
+    "@mag/wa-engine": "workspace:*",
+    "@mag/module-security": "workspace:*",
+    "@mag/module-warmup": "workspace:*",
+    "@mag/module-blacklist": "workspace:*",
+    "@mag/accounts": "workspace:*",
+    "@mag/llm": "workspace:*",
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.75.0",
+    "bullmq": "^5.61.0",
+    "clsx": "^2.1.1",
+    "drizzle-orm": "^0.45.0",
+    "ioredis": "^5.8.2",
+    "lucide-react": "^1.70.0",
+    "next": "~15.5.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "server-only": "^0.0.1",
+    "sharp": "0.34.5",
+    "tailwind-merge": "^3.3.1",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "postgres": "^3.4.7",
+    "tailwindcss": "^4.1.14"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@mag/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "eslint src test",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@mag/db": "workspace:*",
+    "@mag/shared": "workspace:*",
+    "@mag/wa-engine": "workspace:*",
+    "@mag/module-security": "workspace:*",
+    "@mag/module-warmup": "workspace:*",
+    "@mag/module-blacklist": "workspace:*",
+    "@mag/accounts": "workspace:*",
+    "@mag/llm": "workspace:*",
+    "bullmq": "^5.61.0",
+    "drizzle-orm": "^0.45.0",
+    "ioredis": "^5.8.2"
+  },
+  "devDependencies": {
+    "postgres": "^3.4.7",
+    "tsx": "^4.20.6"
+  }
+}

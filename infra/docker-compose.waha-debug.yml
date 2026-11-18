@@ -1,0 +1,6 @@
+# Só para depuração local: publica a API do WAHA em 127.0.0.1 (nunca publique para a internet).
+# Uso: docker compose --env-file .env -f infra/docker-compose.yml -f infra/docker-compose.waha-debug.yml up -d
+services:
+  waha:
+    ports:
+      - "127.0.0.1:${WAHA_PORT:-3001}:3000"

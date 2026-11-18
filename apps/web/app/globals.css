@@ -1,0 +1,441 @@
+@import 'tailwindcss';
+/* componentes em ui/ de cada módulo usados pelas rotas do painel. Só ui/: varrer a pasta modules inteira fazia o
+   Next dev recompilar quando Playwright/vitest gravavam test-results dentro dos módulos. */
+@source '../../../modules/*/ui/**/*.tsx';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Sistema visual: paleta neutra (cinza) + um azul de acento, só tema claro, sem fonte nem marca de terceiros
+ * (pilha de fontes do sistema). Os tokens semânticos (bg, fg, muted, card, border, accent, ok, warn, bad, info)
+ * são os que os componentes de ui/ usam.
+ */
+:root {
+  /* variáveis para CSS escrito à mão */
+  --azul: #1d5fd1;
+  --azul-escuro: #164aa3;
+  --navy: #1f242c; /* cinza-grafite do trilho e dos itens "atuais" */
+  --navy-2: #2d343e;
+  --gelo: #f1f3f6;
+  --linha: #d2d7de;
+  --raio-controle: 8px;
+  --texto: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  color-scheme: light;
+}
+
+@theme {
+  /* superfícies: cinza claro + branco */
+  --color-bg: #f4f5f7;
+  --color-card: #ffffff;
+  --color-subtle: #eceef2;
+  --color-border: #d2d7de;
+  --color-border-strong: #a9b0ba;
+  /* texto */
+  --color-fg: #16191f;
+  --color-muted: #566070;
+  /* acento: um azul só */
+  --color-accent: #1d5fd1;
+  --color-accent-hover: #164aa3;
+  --color-accent-fg: #ffffff;
+  --color-accent-soft: #eef3fc;
+  --color-ring: #1d5fd1;
+  --color-navy: #1f242c;
+  /* estados: texto forte + fundo tonal */
+  --color-ok: #17703f;
+  --color-ok-soft: #e3f2ea;
+  --color-warn: #7a5000;
+  --color-warn-soft: #fbf0d9;
+  --color-bad: #b4283f;
+  --color-bad-soft: #f8e6e9;
+  --color-bad-fg: #ffffff;
+  --color-info: #164aa3;
+  --color-info-soft: #e6eefb;
+  /* trilho */
+  --color-sidebar: #1f242c;
+  --color-sidebar-fg: #c3c9d2;
+  --color-sidebar-muted: #8b94a1;
+  --color-sidebar-hover: #2d343e;
+  --color-sidebar-active: #1d5fd1;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-heading: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-md: 8px;
+  --radius-lg: 8px;
+  --radius-xl: 16px;
+  --radius-2xl: 16px;
+
+  /* plano por padrão: sombra só no que flutua */
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-card: none;
+  --shadow-pop: 0 18px 48px rgb(15 18 24 / 0.22);
+
+  --default-transition-duration: 160ms;
+  --default-transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+body {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+@layer base {
+  /* foco visível em tudo que é navegável por teclado */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .mag-trilho :is(.mag-item, .mag-marca, .mag-pe button):focus-visible {
+    outline-color: #fff;
+  }
+  a {
+    text-underline-offset: 3px;
+  }
+  * {
+    scrollbar-color: var(--color-border) transparent;
+    scrollbar-width: thin;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  code,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+  }
+  /* números alinhados em tabelas/indicadores */
+  table {
+    font-variant-numeric: tabular-nums;
+  }
+  input[type='checkbox'],
+  input[type='radio'] {
+    accent-color: var(--color-accent);
+  }
+  select {
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Tabela (componente <Table>): 14px tabular, cabeçalho 600 suave com divisor, células com divisor claro, hover claro;
+     cabeçalho fixo ao rolar */
+  .mag-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+  }
+  .mag-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--color-card);
+    color: var(--color-muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+  }
+  .mag-table tbody td {
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--gelo);
+    vertical-align: middle;
+  }
+  .mag-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .mag-table tbody tr:not(.mag-table-message):hover td {
+    background: var(--gelo);
+  }
+
+  /* <dialog> padrão (ConfirmDialog, modais de formulário) */
+  .mag-dialog {
+    margin: auto;
+    border: 0;
+    border-radius: var(--radius-xl);
+    background: var(--color-card);
+    color: var(--color-fg);
+    box-shadow: var(--shadow-pop);
+    padding: 0;
+  }
+  .mag-dialog::backdrop {
+    background: rgb(10 12 16 / 0.6);
+  }
+
+  .mag-toast {
+    animation: mag-toast-in 0.18s ease-out;
+  }
+
+  /* <Table stack>: no celular cada linha vira um cartão; as ações (última célula) ocupam a linha de baixo */
+  @media (max-width: 640px) {
+    .mag-table-stack,
+    .mag-table-stack tbody {
+      display: block;
+    }
+    .mag-table-stack thead {
+      display: none;
+    }
+    .mag-table-stack tbody tr {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.375rem 0.75rem;
+      padding: 0.75rem 0.875rem;
+      border-bottom: 1px solid var(--gelo);
+    }
+    .mag-table-stack tbody tr:last-child {
+      border-bottom: 0;
+    }
+    .mag-table-stack tbody td {
+      padding: 0;
+      border: 0;
+    }
+    .mag-table-stack tbody td:last-child {
+      flex-basis: 100%;
+    }
+    .mag-table-stack tbody tr:not(.mag-table-message):hover td {
+      background: transparent;
+    }
+  }
+
+  .mag-scroll-x {
+    scrollbar-width: none;
+  }
+  .mag-scroll-x::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes mag-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/*
+ * Moldura das telas logadas: trilho grafite de 72px que abre por cima a 248px no hover/foco;
+ * ≤ 860px vira barra no topo.
+ */
+.mag-shell {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  min-height: 100vh;
+}
+.mag-trilho {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 72px;
+  z-index: 65;
+  background: var(--navy);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 12px;
+  overflow: hidden;
+  transition:
+    width 160ms ease-out,
+    box-shadow 160ms ease-out;
+}
+.mag-trilho:hover,
+.mag-trilho:focus-within {
+  width: 248px;
+  box-shadow: 12px 0 32px rgb(15 18 24 / 0.25);
+}
+.mag-marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 0 9px;
+  margin-bottom: 10px;
+  flex: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.mag-marca svg {
+  flex: none;
+}
+.mag-marca-texto {
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  transition: opacity 160ms ease-out;
+}
+.mag-trilho:is(:hover, :focus-within) .mag-marca-texto {
+  max-width: 170px;
+  opacity: 1;
+}
+.mag-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.mag-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 44px;
+  flex: none;
+  width: 100%;
+  padding: 0 13px;
+  border-radius: 10px;
+  color: #c3c9d2;
+  font: 500 15px/1 var(--texto);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 160ms ease-out,
+    color 160ms ease-out;
+}
+.mag-rotulo {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden; /* fechado: some da vista mas segue no DOM (nome acessível) */
+  transition: opacity 160ms ease-out;
+}
+.mag-trilho:is(:hover, :focus-within) .mag-rotulo {
+  max-width: 160px;
+  opacity: 1;
+}
+.mag-item svg {
+  flex: none;
+}
+.mag-item:hover {
+  background: var(--navy-2);
+  color: #fff;
+}
+.mag-item[aria-current] {
+  background: var(--azul);
+  color: #fff;
+}
+.mag-pe {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 10px 6px 0;
+  border-top: 1px solid #3a424e;
+  white-space: nowrap;
+  color: #c3c9d2;
+  font-size: 14px;
+  flex: none;
+}
+.mag-pe span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mag-pe button {
+  margin-left: auto;
+  font: 600 13px/1 var(--texto);
+  color: #fff;
+  background: transparent;
+  border: 1px solid #566070;
+  border-radius: var(--raio-controle);
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 160ms ease-out;
+}
+.mag-pe button:hover {
+  background: var(--navy-2);
+}
+/* fechado, só o ícone: o pé fica escondido */
+.mag-trilho:not(:hover):not(:focus-within) .mag-pe {
+  visibility: hidden;
+}
+.mag-area {
+  grid-column: 2; /* o trilho é fixed (fora da grade) */
+  padding: 32px 40px 32px;
+  min-width: 0;
+}
+@media (max-width: 860px) {
+  .mag-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .mag-trilho,
+  .mag-trilho:is(:hover, :focus-within) {
+    position: static;
+    width: auto;
+    box-shadow: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 12px 16px;
+    overflow: visible;
+  }
+  .mag-marca {
+    margin: 0;
+  }
+  .mag-marca-texto,
+  .mag-trilho:is(:hover, :focus-within) .mag-marca-texto {
+    max-width: none;
+    opacity: 1;
+  }
+  .mag-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+  .mag-rotulo,
+  .mag-trilho:is(:hover, :focus-within) .mag-rotulo {
+    max-width: none;
+    opacity: 1;
+  }
+  .mag-item {
+    width: auto;
+    height: 40px;
+    padding: 0 10px;
+    gap: 8px;
+  }
+  .mag-pe,
+  .mag-trilho:not(:hover):not(:focus-within) .mag-pe {
+    visibility: visible;
+    margin: 0 0 0 auto;
+    border-top: 0;
+    padding: 0;
+  }
+  .mag-area {
+    grid-column: 1;
+    padding: 24px 16px 32px;
+  }
+}
+@media print {
+  .mag-trilho {
+    display: none;
+  }
+  .mag-shell {
+    display: block;
+  }
+  .mag-area {
+    grid-column: 1;
+    padding: 0;
+  }
+}

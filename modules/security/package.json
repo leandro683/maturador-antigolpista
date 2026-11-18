@@ -1,0 +1,27 @@
+{
+  "name": "@mag/module-security",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "eslint src test",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@mag/db": "workspace:*",
+    "@mag/shared": "workspace:*",
+    "@mag/wa-engine": "workspace:*",
+    "drizzle-orm": "^0.45.0",
+    "postgres": "^3.4.7",
+    "react": "^19.1.0",
+    "sharp": "0.34.5",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0"
+  }
+}
