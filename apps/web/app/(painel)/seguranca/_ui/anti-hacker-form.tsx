@@ -205,7 +205,7 @@ export function AntiHackerForm({
             rows={3}
             value={allowed}
             onChange={(e) => setAllowed(e.target.value)}
-            placeholder="+55 45 99999-0000"
+            placeholder="+55 11 99999-0000"
           />
         </label>
       </fieldset>
@@ -319,7 +319,7 @@ export function AntiHackerForm({
                     className={`${inputClass} mt-1 w-56`}
                     value={photoNumber}
                     onChange={(e) => setPhotoNumber(e.target.value)}
-                    placeholder="+55 45 99999-0000"
+                    placeholder="+55 11 99999-0000"
                   />
                 </label>
                 <button type="button" className={buttonClass('secondary')} disabled={pending} onClick={fromNumber}>

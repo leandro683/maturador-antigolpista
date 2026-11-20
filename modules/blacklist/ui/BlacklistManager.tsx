@@ -320,7 +320,7 @@ function NumbersPanel({
               </select>
               <input
                 aria-label="Número a bloquear"
-                placeholder={kind === 'phone' ? '(45) 99999-0000' : '123456789012345'}
+                placeholder={kind === 'phone' ? '(11) 99999-0000' : '123456789012345'}
                 className={`${input} min-w-40 flex-1`}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
@@ -538,7 +538,7 @@ function AdminTab({
       >
         <input
           aria-label="Número administrativo"
-          placeholder="(45) 99999-0000"
+          placeholder="(11) 99999-0000"
           className={input}
           value={value}
           onChange={(e) => setValue(e.target.value)}

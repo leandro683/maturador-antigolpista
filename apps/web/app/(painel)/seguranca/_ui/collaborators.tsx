@@ -42,7 +42,7 @@ export function VerifyBox({ campaignId }: { campaignId: string }) {
     >
       <input
         className={`${inputClass} max-w-xs`}
-        placeholder="(45) 99999-0000"
+        placeholder="(11) 99999-0000"
         aria-label="Número para verificar"
         value={q}
         onChange={(e) => setQ(e.target.value)}
